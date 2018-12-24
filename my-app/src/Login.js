@@ -67,7 +67,7 @@ class Login extends Component {
       .then(res => {
         console.log(res);
         if (res.data) {
-          if(this.state.cur_User == "easteregg") { 
+          if(this.state.cur_User === "easteregg") { 
             window.location.href = 'http://csc412sfsu.com/~pnaing/Game.html';
           }
             this.props.loginRequest(this.state.cur_User);

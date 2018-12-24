@@ -16,7 +16,7 @@ class App extends Component {
             <Route
               path="/"
               render={() =>
-                this.props.logged ? <Redirect to="/login" /> :  <Redirect to="/logged" /> 
+                this.props.logged ? <Login /> :  <Mail /> 
               }
             />
             <Switch>

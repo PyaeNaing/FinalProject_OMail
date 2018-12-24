@@ -1,6 +1,7 @@
 import static com.mongodb.client.model.Filters.*;
 import com.google.gson.*;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -13,11 +14,21 @@ public class Database {
   private MongoDatabase db;
   private MongoCollection<Document> myCollectionUsers;
   private MongoCollection<Document> myCollectionMail;
+  private MongoClientURI uri;
+
+
   private Database() {
-    mongoClient = new MongoClient("localhost", 27017);
+
+    uri = new MongoClientURI(
+            "mongodb://dbUser:dbUser@res-shard-00-00-d3ykx.gcp.mongodb.net:27017,res-shard-00-01-d3ykx.gcp.mongodb.net:27017," +
+                    "res-shard-00-02-d3ykx.gcp.mongodb.net:27017/test?ssl=true&replicaSet=Res-shard-0&authSource=admin&retryWrites=true");
+    mongoClient = new MongoClient(uri);
     db = mongoClient.getDatabase("REST2");
+//    mongoClient = new MongoClient("localhost", 27017);
+//    db = mongoClient.getDatabase("REST2");
     myCollectionUsers = db.getCollection("users ");
     myCollectionMail = db.getCollection("mail ");
+
   }
 
   public static Database getInstance() {
