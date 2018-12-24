@@ -15,7 +15,7 @@
     "react-scripts": "2.1.1",
     "redux": "^4.0.1"
   },
-  "proxy": "https://omail.herokuapp.com/",
+  "proxy" : "https://omail.herokuapp.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

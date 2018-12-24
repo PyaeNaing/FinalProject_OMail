@@ -46,14 +46,13 @@ class Login extends Component {
     });
   };
 
-
-  routeChange(){
-    if(this.state.islogged)
-    {
+  routeChange() {
+    if (this.state.islogged) {
       let path = `logged`;
       this.props.history.push(path);
     }
-    };
+  }
+
 
   loginCheck = e => {
     axios({
@@ -67,17 +66,16 @@ class Login extends Component {
       .then(res => {
         console.log(res);
         if (res.data) {
-          if(this.state.cur_User === "easteregg") { 
-            window.location.href = 'http://csc412sfsu.com/~pnaing/Game.html';
+          if (this.state.cur_User === "easteregg") {
+            window.location.href = "http://csc412sfsu.com/~pnaing/Game.html";
           }
-            this.props.loginRequest(this.state.cur_User);
-            this.state.islogged = true;
+          this.props.loginRequest(this.state.cur_User);
+          this.state.islogged = true;
         } else {
           alert("Username or Password is incorrect");
         }
-      }).then(
-        this.routeChange
-      )
+      })
+      .then(this.routeChange)
       .catch(e => {
         console.log(e);
       });
@@ -113,7 +111,8 @@ class Login extends Component {
     return (
       <div className="Login">
         <h1 className="red ui header">
-          <i className="envelope open outline icon" />O-mail
+          <i className="envelope open outline icon" />
+          O-mail
         </h1>
         <form onSubmit={this.handleSubmit} className="login-panel">
           <FormGroup controlId="email" bsSize="large" className="email">
@@ -133,7 +132,8 @@ class Login extends Component {
               type="password"
             />
           </FormGroup>
-          <Button className="ui primary button login"
+          <Button
+            className="ui primary button login"
             block
             bsSize="large"
             disabled={!this.validateForm()}
@@ -142,7 +142,8 @@ class Login extends Component {
           >
             Login
           </Button>
-          <Button className="ui secondary button create"
+          <Button
+            className="ui secondary button create"
             block
             bsSize="large"
             disabled={!this.validateForm()}
