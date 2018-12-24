@@ -25,7 +25,7 @@ class Login extends Component {
   createUser = e => {
     axios({
       method: "POST",
-      url: "/create",
+      url: "https://omail.herokuapp.com/create",
       data: {
         user: this.state.email,
         password: this.state.password
@@ -57,7 +57,7 @@ class Login extends Component {
   loginCheck = e => {
     axios({
       method: "POST",
-      url: "/login",
+      url: "https://omail.herokuapp.com/login",
       data: {
         user: this.state.email,
         password: this.state.password

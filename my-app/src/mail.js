@@ -27,7 +27,7 @@ class Mail extends Component {
 
     axios({
       method: "POST",
-      url: "/mail",
+      url: "https://omail.herokuapp.com/mail",
       data: {
         user: this.props.currentUser,
         Show: "Inbox"
@@ -46,7 +46,7 @@ class Mail extends Component {
     this.setState({inbox:false})
     axios({
       method: "POST",
-      url: "/mail",
+      url: "https://omail.herokuapp.com/mail",
       data: {
         user: this.props.currentUser,
         Show: "Sent"
@@ -66,7 +66,7 @@ class Mail extends Component {
   getTrash = e => {
     axios({
       method: "POST",
-      url: "/mail",
+      url: "https://omail.herokuapp.com/mail",
       data: {
         user: this.props.currentUser,
         Show: "Trash"
