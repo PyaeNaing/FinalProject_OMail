@@ -22,7 +22,7 @@ class Modal extends Component {
     sendMail = e => {
         axios({
           method: "POST",
-          url: "/send",
+          url: "https://omail.herokuapp.com/send",
           data: {
             from: this.props.currentUser,
             to: this.props.currentEmail.Sender,
