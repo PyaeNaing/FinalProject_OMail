@@ -32,6 +32,10 @@ class Modal extends Component {
         })
           .then(res => {
             this.props.selectEmail("")
+            if(!res.data)
+            {
+                alert("Fail to send mail, Username does not exist");
+            }
             console.log(res.data);
           })
           .catch(e => {

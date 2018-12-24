@@ -20,14 +20,12 @@ public class Database {
   private Database() {
 
     uri = new MongoClientURI(
-            "mongodb://dbUser:dbUser@res-shard-00-00-d3ykx.gcp.mongodb.net:27017,res-shard-00-01-d3ykx.gcp.mongodb.net:27017," +
-                    "res-shard-00-02-d3ykx.gcp.mongodb.net:27017/test?ssl=true&replicaSet=Res-shard-0&authSource=admin&retryWrites=true");
+            "mongodb://dbUser:dbUser@res-shard-00-00-d3ykx.gcp.mongodb.net:27017,res-shard-00-01-d3ykx.gcp.mongodb.net:27017,res-shard-00-02-d3ykx.gcp.mongodb.net:27017/test?ssl=true&replicaSet=Res-shard-0&authSource=admin&retryWrites=true");
     mongoClient = new MongoClient(uri);
     db = mongoClient.getDatabase("REST2");
-//    mongoClient = new MongoClient("localhost", 27017);
-//    db = mongoClient.getDatabase("REST2");
     myCollectionUsers = db.getCollection("users ");
     myCollectionMail = db.getCollection("mail ");
+
 
   }
 
@@ -53,7 +51,7 @@ public class Database {
     try {
       Document search = myCollectionUsers.find(eq("User", user)).first();
       return (search.getString("User").equals(user) &&
-        search.getString("Password").equals(pass));
+              search.getString("Password").equals(pass));
     } catch (Exception e) {
       return false;
     }
@@ -98,24 +96,24 @@ public class Database {
     //this method moves the mail from current list to destination list.
     //return true if successful, false otherwise.\
     //TODO: Find better matching strategy
-      if (destination.equals("Trash")) {
-        Document search;
-        try {
-          search = myCollectionMail.find(eq("MailID", mailId)).first();
-        } catch (Exception e) {
-          return false;
-        }
-        Gson gson = new Gson();
-        String m = search.toJson();
-        Mail mail = gson.fromJson(m, Mail.class);
-        myCollectionMail.deleteOne(search);
-        if(user.equals(mail.getRecipient())) {
-          mail.moveToTrash();
-        } else if(user.equals(mail.getSender())) {
-          mail.moveToTrashSent();
-        }
-        storeMail(mail);
+    if (destination.equals("Trash")) {
+      Document search;
+      try {
+        search = myCollectionMail.find(eq("MailID", mailId)).first();
+      } catch (Exception e) {
+        return false;
       }
+      Gson gson = new Gson();
+      String m = search.toJson();
+      Mail mail = gson.fromJson(m, Mail.class);
+      myCollectionMail.deleteOne(search);
+      if(user.equals(mail.getRecipient())) {
+        mail.moveToTrash();
+      } else if(user.equals(mail.getSender())) {
+        mail.moveToTrashSent();
+      }
+      storeMail(mail);
+    }
     return true;
   }
 
@@ -133,19 +131,20 @@ public class Database {
     Gson gson = new Gson();
     String m = search.toJson();
     Mail mail = gson.fromJson(m, Mail.class);
-      if(user.equals(mail.getRecipient())) {
-        mail.recepientDelete();
-        myCollectionMail.deleteOne(search);
-        storeMail(mail);
-      }else if(user.equals(mail.getSender())) {
-        mail.senderDelete();
-        myCollectionMail.deleteOne(search);
-        storeMail(mail);
-      }
-      if (mail.didRecepientDelete() && mail.didSenderDelete()) {
-        myCollectionMail.deleteOne(search);
-      }
+    if(user.equals(mail.getRecipient())) {
+      mail.recepientDelete();
+      myCollectionMail.deleteOne(search);
+      storeMail(mail);
+    }else if(user.equals(mail.getSender())) {
+      mail.senderDelete();
+      myCollectionMail.deleteOne(search);
+      storeMail(mail);
+    }
+    if (mail.didRecepientDelete() && mail.didSenderDelete()) {
+      myCollectionMail.deleteOne(search);
+    }
     return true;
   }
 
 }
+

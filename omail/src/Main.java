@@ -4,7 +4,6 @@ import spark.Response;
 import static spark.Spark.*;
 import java.util.*;
 
-
 public class Main {
 
     public static String processRoute(Request req, Response res) {
@@ -19,10 +18,39 @@ public class Main {
         System.out.println(req.queryMap().get("id").value());
         return "done!";
     }
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 1234; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
 
     public static void main(String[] args) {
+
         Database d = Database.getInstance();
-        port(1234);
+        port(Integer.valueOf(getHerokuAssignedPort()));
+
+        options("/*",
+                (request, response) -> {
+
+                    String accessControlRequestHeaders = request
+                            .headers("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                        response.header("Access-Control-Allow-Headers",
+                                accessControlRequestHeaders);
+                    }
+
+                    String accessControlRequestMethod = request
+                            .headers("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                        response.header("Access-Control-Allow-Methods",
+                                accessControlRequestMethod);
+                    }
+
+                    return "OK";
+                });
+        before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
         post("/create", (req, res) -> {
             String body = req.body();
@@ -41,10 +69,12 @@ public class Main {
 
         post("/send", (req, res) -> {
             String body = req.body();
-            ProcessNetwork.sendMail(getString(body, "from"),getString(body,"to"),getString(body,"subject"), getString(body,"msg"), d);
-            return "sent";
+            return ProcessNetwork.sendMail(getString(body, "from"),getString(body,"to"),getString(body,"subject"), getString(body,"msg"), d);
         });
 
+        get("/test", (req, res) ->{
+            return "Success";
+        });
     }
 
 

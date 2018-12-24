@@ -29,6 +29,10 @@ class ComposeModal extends Component {
      })
          .then(res => {
          this.props.closeCompose()
+         if(!res.data)
+         {
+             alert("Fail to send mail, Username does not exist");
+         }
          console.log(res.data);
          })
          .catch(e => {
