@@ -1,3 +1,6 @@
+site: https://pyaenaing.github.io/Project_Omail/ (Please wait 1 min to load up database)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
