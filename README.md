@@ -1,5 +1,5 @@
 # FinalProject_OMail
-
+site: https://pyaenaing.github.io/Project_Omail/ (please wait 1 min for db to load)
 ## Semantic UI
 This project uses Semantic-UI to provide styles and Layout
 
